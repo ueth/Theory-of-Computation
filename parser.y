@@ -58,7 +58,7 @@
 
 %start input
 
-%type <str> program_body identifier_init constant func_dec func_body parameters main_func assign_expr comp_func_dec comp_parameters compact_array
+%type <str> program_body const_init constant func_dec func_body parameters main_func assign_expr comp_func_dec comp_parameters compact_array
 %type <str> identifier variables data_type func_call func_var instructions stmts combination comb_body comp_identifier comp_variables
 %type <str> expr 
 
@@ -68,7 +68,7 @@
 %left KW_OR
 %left EQ NEQ
 %left LT GT LTE GTE
-%left PLUS MINUS DOT
+%left PLUS MINUS DOT LEFT_BRACKET RIGHT_BRACKET LEFT_PAREN RIGHT_PAREN
 %left MULTIPLY DIVIDE MODULUS HASHTAG
 %right ASSIGN DIV_ASSIGN MOD_ASSIGN MUL_ASSIGN PLUS_ASSIGN MINUS_ASSIGN COLON_ASSIGN
 %nonassoc KW_ELSE
@@ -79,7 +79,6 @@ input:
 	program_body  
 	{
 		if (yyerror_count == 0) {
-			puts("#include <math.h>\n");
       		puts(c_prologue); 
 			printf("%s\n", $1);	
 		}
@@ -88,9 +87,7 @@ input:
 
 identifier:
 	TK_IDENT {$$ = $1;}
-	| TK_IDENT ASSIGN expr {$$ = template("%s = %s", $1, $3);}
     | TK_IDENT COMMA identifier {$$ = template("%s , %s", $1, $3);}
-    | TK_IDENT ASSIGN expr COMMA identifier {$$ = template("%s = %s , %s", $1, $3, $5);}
     ;
 
 variables:
@@ -159,13 +156,13 @@ assign_expr:
     ;
 
 
-identifier_init:
+const_init:
     TK_IDENT ASSIGN expr {$$ = template("%s = %s", $1, $3);}
-    | TK_IDENT ASSIGN expr COMMA identifier_init {$$ = template("%s = %s , %s", $1, $3, $5);}
+    | TK_IDENT ASSIGN expr COMMA const_init {$$ = template("%s = %s , %s", $1, $3, $5);}
 	;
 
 constant:
-    KW_CONST identifier_init COLON data_type SEMICOLON {$$ = template("const %s %s;\n", $4, $2);}
+    KW_CONST const_init COLON data_type SEMICOLON {$$ = template("const %s %s;\n", $4, $2);}
     ;
 
 func_dec:
@@ -365,7 +362,7 @@ data_type:
 int main ()
 {
    if ( yyparse() == 0 )
-		printf("\n");
+		printf("/*Accepted*/");
 	else
 		printf("Rejected!\n");
 }

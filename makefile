@@ -20,7 +20,5 @@ clean:
 	rm -f parser.output
 	rm -f parser.tab.c
 	rm -f parser.tab.h
-	rm -f correct1.c
 	rm -f correct1
-	rm -f correct2.c
 	rm -f correct2

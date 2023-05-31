@@ -10,8 +10,7 @@
 
 
 ID      	[a-zA-Z][0-9a-zA-Z_]*
-DIGIT     [0-9]
-NUMBER    {DIGIT}{DIGIT}*
+NUMBER    ([1-9][0-9]*)|0
 DECIMAL   ("."{NUMBER})|({NUMBER}("."{NUMBER}?)?)
 REAL      {DECIMAL}([eE][+-]?{NUMBER})?
 CHARACTER [., a-zA-Z0-9\-+\*\/:_%$!#@&~^()]|[\\n]|[\\t]|[\\r]|[\\\\]
@@ -88,7 +87,7 @@ of		      return KW_OF;
 
 
 [ \t\r]+     /* Ignore whitespace */
-"--"[^\n]*     /* Ignore anything after "--" until the end of the line */
+"--"[^\n]*   /* Ignore anything after "--" until the end of the line */
 
 \n 					 ++line_num;
 
