@@ -125,6 +125,7 @@ expr:
     | MODULUS expr { $$ = template("%%%s", $2); }
     | HASHTAG expr { $$ = template("self->%s", $2); }
     | MINUS expr %prec MINUS {$$ = template("-%s", $2);}
+    | PLUS expr %prec PLUS {$$ = template("+%s", $2);}
     | KW_NOT expr { $$ = template("!%s", $2); } %prec KW_NOT
     | expr PLUS expr { $$ = template("%s + %s", $1, $3); }
     | expr MINUS expr { $$ = template("%s - %s", $1, $3); }
